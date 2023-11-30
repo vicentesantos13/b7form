@@ -12,7 +12,21 @@ const config: Config = {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+      }, 
+      fontFamily: {
+        poppins: ["Poppins"],
       },
+      colors: {
+        black14: '#141414',
+        black10: '#101010',
+        gray2A: '#2a2a2a',
+        gray1C: '#1c1c1c',
+        gray23: '#232323',
+        gray7F: '#7f7f7f',
+        grayBG: '#CCCCCC',
+        blueB7Shop: '#006EDF',
+        greenButton: '#20c982',
+      }
     },
   },
   plugins: [],
