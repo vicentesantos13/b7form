@@ -1,29 +1,22 @@
 "use client";
+import React from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { MessageFormSchema, MessageFormData } from "../types/FormTypes";
+import FormInput from "./forms/FormInput";
+import FormTextarea from "./forms/FormTextarea";
 
-export const FormArea = () => {
-  const MessageFormSchema = z.object({
-    name: z
-      .string()
-      .min(2, { message: "O nome deve ter pelo menos 2 caracteres." })
-      .max(30, { message: "O nome deve ter no máximo 30 caracteres." }),
-    text: z
-      .string()
-      .min(3, { message: "A mensagem deve ter pelo menos 3 caracteres." })
-      .max(200, { message: "A mensagem deve ter no máximo 200 caracteres." }),
-  });
-
+export const FormArea: React.FC = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({
+  } = useForm<MessageFormData>({
     resolver: zodResolver(MessageFormSchema),
   });
 
-  const handleSendMessage = () => {
+  const handleSendMessage: SubmitHandler<MessageFormData> = (data) => {
+    console.log(data);
     alert("Mensagem enviada");
   };
 
@@ -32,42 +25,23 @@ export const FormArea = () => {
       onSubmit={handleSubmit(handleSendMessage)}
       className="bg-gray1C mx-6 md:mx-0 mt-12 md:mt-0 flex flex-col items-center rounded md:w-1/2"
     >
-      <div className="w-full flex items-center flex-col ">
-        <input
-          {...register("name")}
-          type="text"
-          placeholder="Digite o seu nome"
-          className={`bg-gray23 text-gray7F w-11/12 mt-5 h-16 rounded pl-4 text-lg ${
-            errors.name
-              ? "border border-red-700 outline outline-red-700"
-              : "outline-none"
-          } `}
-        />
-        {errors.name && (
-          <p className="text-red-700 text-xs mt-2">
-            {errors.name.message as string}
-          </p>
-        )}
-      </div>
-      <div className="w-full flex items-center flex-col ">
-        <textarea
-          {...register("text")}
-          className={`bg-gray23 text-gray7F w-11/12 mt-8 h-72 rounded px-4 pt-4 resize-none text-lg ${
-            errors.text
-              ? "border border-red-700 outline outline-red-700"
-              : "outline-none"
-          }`}
-          placeholder="Digite a sua mensagem"
-        ></textarea>
-        {errors.text && (
-          <p className="text-red-700 text-xs mt-2">
-            {errors.text.message as string}
-          </p>
-        )}
-      </div>
+      <FormInput
+        register={register}
+        name="name"
+        placeholder="Digite o seu nome"
+        error={errors.name?.message}
+      />
+      <FormTextarea
+        register={register}
+        name="text"
+        placeholder="Digite a sua mensagem"
+        error={errors.text?.message}
+      />
       <button className="bg-greenButton text-white text-xl font-medium w-11/12 h-16 rounded my-6">
         Enviar mensagem
       </button>
     </form>
   );
 };
+
+export default FormArea;
